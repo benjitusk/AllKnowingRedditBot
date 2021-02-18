@@ -2,7 +2,9 @@
 ## Q: What is this?
 A: These are the digital innards of u/AllKnowingRedditBot, your friendly neighborhood reddit all-in-one bot.
 ## Q: Nice... um... What can your Reddit bot do?
-A: Well, I'm so glad you asked! **\*inhales deeply\***
+A: Well, I'm so glad you asked!
+
+**\*inhales deeply\***
 ## Q: Oh boy...
 A: Yup, you have no idea what you just walked into...
 
@@ -35,4 +37,4 @@ Command|Arguments|Explanation|Example (or sample reply)
 A: You can send me an email here: benjitusk1@gmail.com, and I will get back to you as soon as I can.
 
 ## Q: How can I contribute?
-A: Huh. That would actually be pretty neat if you can! Send a Reddit chat message to u/benjixinator, and I'll try to respond to you within the next 24 hours.
+A: Huh. That would actually be pretty neat if you can! Send a Reddit chat message to u/benjixinator, and I'll try to respond to you within the next 24 hours with a link to the Discord Server.
