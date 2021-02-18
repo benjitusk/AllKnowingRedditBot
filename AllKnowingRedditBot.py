@@ -346,7 +346,7 @@ def get_translation(comment):
     url = 'https://api.us-east.language-translator.watson.cloud.ibm.com/instances/84903ddb-1980-49f0-9a88-52255104c2af/v3/translate?version=2018-05-01'
     response = requests.post(url, headers=headers,
                              data=data, auth=('apikey', API_KEYS['IBM']))
-    if not 200 <= response.status_code < 300:
+    if response.status_code != 200:
         return f'Sorry, `{language}` is not a valid 2 letter [ISO 639-1 language code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Try again!'
     json = response.json()
     translation = json['translations'][0]['translation']
