@@ -1,6 +1,6 @@
 # AllKnowingRedditBot
 ## Q: What is this?
-A: These are the digital innards of u/AllKnowingRedditBot, your friendly neighborhood reddit 420 bot.
+A: These are the digital innards of u/AllKnowingRedditBot, your friendly neighborhood reddit all-in-one bot.
 ## Q: Nice... um... What can your Reddit bot do?
 A: Well, I'm so glad you asked!
 ## Q: Oh boy...
