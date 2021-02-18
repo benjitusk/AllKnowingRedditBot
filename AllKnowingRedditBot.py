@@ -428,55 +428,6 @@ def main():
             process_comments(comment)
             if comment.author.name == 'generic_reddit_bot_2':
                 continue
-#               comment_reply = False
-#             for token in word_tokenize(comment.body):
-#                 if token == '420' or token == '420th' or 'four twenty' in comment.body or 'four hundred and twenty' in comment.body or 'four hundred twenty' in comment.body:
-#                     comment_reply = True
-#             if comment_reply:
-#                 # Step one: check if username already exists in the database
-#                 query = 'SELECT username, value FROM nicecount WHERE username = %s'
-#                 # Trailing comma is to make it a tuple
-#                 values = (comment.author.name,)
-#                 db.execute(query, values)
-#                 data = []
-#                 for row in db:
-#                     data.append(row)
-#                 if DEBUG:
-#                     print(
-#                         f'Checking for u/{comment.author.name} in the database...')
-#                     print('Found this data...')
-#                     print(data)
-#                 #
-#                 # If there is no data for the user, add the user with a value of 1
-#                 if data == []:
-#                     if DEBUG:
-#                         print(
-#                             f'Inserting u/{comment.author.name} into the database.')
-#                     query = 'INSERT INTO nicecount VALUES (%s, 1)'
-#                     # Trailing comma is to make it a tuple
-#                     values = (comment.author.name,)
-#                     db.execute(query, values)
-#                     mydb.commit()
-#                 # otherwise, check the value of the user and increment it by one
-#                 else:
-#                     # data is formated as such: [('username', value)]
-#                     new_user_nicecount = data[0][1] + 1
-#                     if DEBUG:
-#                         print(
-#                             f'u/{comment.author.name} is already in the database. Updating value to {new_user_nicecount}.')
-#                     query = 'UPDATE nicecount SET value = %s WHERE username = %s'
-#                     # Trailing comma is to make it a tuple
-#                     values = (new_user_nicecount, comment.author.name,)
-#                     db.execute(query, values)
-#                     mydb.commit()
-#                 reply(comment, f'''420? Nice.
-#
-# I\'m a bot lol.
-#
-# ^(NiceCount: {nicecount})
-#
-# ^(Comments scanned since last reboot: {comment_count}){get_footer()}''', '420')
-#                 nicecount += 1
     except KeyboardInterrupt:
         print('\nKeyboardInterrupt: Cleaning up...')
         background_tasks()
