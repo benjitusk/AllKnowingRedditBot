@@ -29,7 +29,8 @@ API_KEYS = {
     'GIPHY': config['Authentication']['GIPHY'],  # To get gifs
     'YOUTUBE': config['Authentication']['YOUTUBE'],  # To search YouTube
     # To get lyrics of songs
-    'MUSIXMATCH': config['Authentication']['musixmatch']
+    'MUSIXMATCH': config['Authentication']['musixmatch'],
+    'IBM': config['Authentication']['ibm translation'],  # To translate things
 }
 # Log in to Reddit
 reddit = praw.Reddit("akrb")
@@ -267,7 +268,7 @@ def get_footer():
 ^({get_advice()})'''
 
 
-# Queryt the GIPHY API and return the gif URL
+# Query the GIPHY API and return the gif URL
 def get_gif(search_term=''):
     url = f'https://api.giphy.com/v1/gifs/random?api_key={API_KEYS["GIPHY"]}&tag={search_term}&rating=pg-13'
     response = requests.get(url).json()
@@ -322,6 +323,36 @@ def get_random_fact():
         fact = re.sub('[(`)]', '', response)
         response = f'Random fact: {fact}'
     return response
+
+
+# def get_translation(comment):
+def get_translation(comment):
+    # Step one: get the text to translate
+    parent = comment.parent()
+    try:
+        to_translate = parent.body
+    except AttributeError:
+        to_translate = parent.selftext
+    # Step 2: get language to translate to
+    body = get_arguments('!translate', comment.body)
+    try:
+        language = body.split()[0]  # The first word of body must be a language
+    except AttributeError:
+        language = 'en'
+    # Step 3: Query the translation API
+    headers = {'Content-Type': 'application/json', }
+    data = '{"text": ["' + to_translate + '"], "target":"' + language + '"}'
+    print('Data before utf-8 encoding: ' + data)
+    data = data.encode('utf-8')
+    print('Data after utf-8 encoding: ', data)
+    url = 'https://api.us-east.language-translator.watson.cloud.ibm.com/instances/84903ddb-1980-49f0-9a88-52255104c2af/v3/translate?version=2018-05-01'
+    response = requests.post(url, headers=headers,
+                             data=data, auth=('apikey', API_KEYS['IBM']))
+    if not 200 <= response.status_code < 300:
+        return f'Sorry, `{language}` is not a valid 2 letter [ISO 639-1 language code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Try again!'
+    json = response.json()
+    translation = json['translations'][0]['translation']
+    return translation
 
 
 def interact_with_replies():
@@ -559,6 +590,11 @@ def process_comments(comment):
     # SNAPPLE
     if '!snapple' in body:
         reply(comment, get_random_fact(), 'SNAPPLE')
+
+    # Translate
+
+    if '!translate' in body:
+        reply(comment, get_translation(comment), 'TRANSLATE')
 
     # YOUTUBE
     if '!youtube' in body:
