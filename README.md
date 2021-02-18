@@ -2,10 +2,9 @@
 ## Q: What is this?
 A: These are the digital innards of u/AllKnowingRedditBot, your friendly neighborhood reddit all-in-one bot.
 ## Q: Nice... um... What can your Reddit bot do?
-A: Well, I'm so glad you asked!
+A: Well, I'm so glad you asked! **\*inhales deeply\***
 ## Q: Oh boy...
 A: Yup, you have no idea what you just walked into...
-**\*inhales deeply\***
 
 Table Key:
 * \<argument\> means that you must include this information. If you don't, the command will fail.
