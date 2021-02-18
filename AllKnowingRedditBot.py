@@ -346,10 +346,20 @@ def get_translation(comment):
     url = 'https://api.us-east.language-translator.watson.cloud.ibm.com/instances/84903ddb-1980-49f0-9a88-52255104c2af/v3/translate?version=2018-05-01'
     response = requests.post(url, headers=headers,
                              data=data, auth=('apikey', API_KEYS['IBM']))
-    if response.status_code != 200:
-        return f'Sorry, `{language}` is not a valid 2 letter [ISO 639-1 language code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Try again!'
+    # if response.status_code != 200:
+    #     return f'Sorry, `{language}` is not a valid 2 letter [ISO 639-1 language code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Try again!'
     json = response.json()
-    translation = json['translations'][0]['translation']
+    try:
+        translation = json['translations'][0]['translation']
+    # this means that there was no translation in the response, meaning there was an error.
+    except KeyError:
+        if json['code'] == 404:
+            return f'Sorry, `{language}` is not a valid 2 letter [ISO 639-1 language code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Try again!'
+        if json['code'] == 400:
+            return f'Sorry, an error occured. Here is the debug information: `{json}`'
+    translation += '''\n
+^(By benjixinator. Looking for collaborators, send me a chat message, check out the [Github](https://github.com/benjitusk/AllKnowingRedditBot))
+    '''
     return translation
 
 
