@@ -342,9 +342,7 @@ def get_translation(comment):
     # Step 3: Query the translation API
     headers = {'Content-Type': 'application/json', }
     data = '{"text": ["' + to_translate + '"], "target":"' + language + '"}'
-    print('Data before utf-8 encoding: ' + data)
     data = data.encode('utf-8')
-    print('Data after utf-8 encoding: ', data)
     url = 'https://api.us-east.language-translator.watson.cloud.ibm.com/instances/84903ddb-1980-49f0-9a88-52255104c2af/v3/translate?version=2018-05-01'
     response = requests.post(url, headers=headers,
                              data=data, auth=('apikey', API_KEYS['IBM']))
