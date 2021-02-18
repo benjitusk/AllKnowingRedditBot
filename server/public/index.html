@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>AllKnowingRedditBot</title>
+  <link rel="stylesheet" href="master.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body>
+  <header>
+    <h1>Reddit Database</h1>
+  </header>
+  <form class='query-server' action="/query" method="post">
+    <fieldset>
+      <h3>Query database</h3>
+      <label>Reddit Username:</label>
+      <input name="username" type="text" id="empID" aria-required="$1" placeholder='u/reddit_username' required>
+      <br><br><br>
+      <button type="submit">Submit</button>
+    </fieldset>
+  </form>
+
+
+  <form class='query-server' action="/insert" method="post">
+    <fieldset>
+      <h3>Modify database</h3>
+      <label>Reddit Username:</label>
+      <input name="username" type='text' id="empID" aria-required="$1" placeholder='u/reddit_username' required>
+      <label>Score:</label>
+      <input name="value" type="number" id="empID" aria-required="$1" placeholder='Account value' required>
+      <br><br><br>
+      <button type="reset">Reset</button>
+      <button type="submit">Submit</button>
+    </fieldset>
+  </form>
+
+  <!--<form class='query-server' action="/update" method="post">
+    <fieldset>
+      <h3>Update Employee</h3>
+      <label>Employee ID</label>
+      <input type="number" name="id" id="empID" aria-required="$1" placeholder='1, 2, 3...' required>
+      <br><br>
+      <label>New Name</label>
+      <input type="text" name="name" id="name" aria-required="$1" placeholder='John Doe' required>
+      <br><br>
+      <button type="reset">Reset</button>
+      <button type="submit">Submit</button>
+    </fieldset>
+  </form>
+
+  <form class='query-server' action="/delete" method="post">
+    <fieldset>
+      <h3>Delete Employee</h3>
+      <label>Employee ID</label>
+      <input type="number" name="id" id="empID" aria-required="$1" placeholder='1, 2, 3...' required>
+      <br><br>
+      <button type="reset">Reset</button>
+      <button type="submit">submit</button>
+      <br><br><br>
+    </fieldset>
+  </form> -->
+
+  <div id='serverResponse'>
+    <p>No data yet...</p>
+  </div>
+
+
+  <footer>
+    <hr>
+    <h4>Please click <a href='http://71.179.12.54/close'>this link</a> to close the database connection before closing this window.</h4>
+  </footer>
+</body>
+
+<script type="text/javascript" src="main.js"></script>
+
+</html>

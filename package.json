@@ -1,0 +1,24 @@
+{
+  "name": "420",
+  "version": "1.0.0",
+  "description": "JavaScript version of u/Generic_Reddit_Bot_2",
+  "main": "420.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node 420.js"
+  },
+  "keywords": [
+    "reddit",
+    "bot",
+    "snoowrap",
+    "Generic_Reddit_Bot_2"
+  ],
+  "author": "benijtusk",
+  "license": "ISC",
+  "dependencies": {
+    "regex": "^0.1.1",
+    "snoostorm": "^1.5.2",
+    "snoostream": "^1.0.1",
+    "snoowrap": "^1.22.0"
+  }
+}
