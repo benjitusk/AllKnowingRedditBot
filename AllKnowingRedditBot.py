@@ -258,7 +258,7 @@ def get_footer():
 
 ---
 
-^(Hey, I'm looking for people to [collaborate](https://github.com/benjixinator/Generic_Reddit_Bot_2) with on this bot, if you're intersted, send me a DM [not a PM, use the chat please]!)
+^(Hey, I'm looking for people to [collaborate](https://github.com/benjitusk/AllKnowingRedditBot) with on this bot, if you're intersted, send me a DM [not a PM, use the chat please]!)
 
 ^(For a quick overview of what I can do, comment "!features" for a list.)
 
