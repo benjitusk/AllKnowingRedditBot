@@ -332,11 +332,11 @@ def get_translation(comment):
     try:
         to_translate = parent.body
     except AttributeError:
-        to_translate = parent.selftext
+        to_translate = parent.title + '\n\n' + parent.selftext
     # For some reason, the api breaks on multi-line comments, so for now, we're just replacing all the newlines with a series of charaters that no one would ever put in the comment.
     # This is a very hacky and crappy solution, but this is what i'm doing for now.
     # its all numbers so it doesnt get messed up in the translation
-    hacky_newline_escape_string = '756812490746489507734290875025'
+    hacky_newline_escape_string = '\\n'
     to_translate = to_translate.replace('\n', hacky_newline_escape_string)
     # Step 2: get language to translate to
     body = get_arguments('!translate', comment.body)
@@ -364,7 +364,7 @@ def get_translation(comment):
             return f'Sorry, an error occured. Here is the debug information: `{json}`'
 
     # Un-escape the newlines
-    translation = translation.replace(hacky_newline_escape_string, '\n')
+    translation = translation.replace(hacky_newline_escape_string, '\n\n')
 
     translation += '''\n
 ^(By benjixinator. Looking for collaborators, send me a chat message, check out the [Github](https://github.com/benjitusk/AllKnowingRedditBot))
