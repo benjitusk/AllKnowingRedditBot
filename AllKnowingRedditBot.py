@@ -21,7 +21,6 @@ config.read('config.ini')
 # If DEBUG is True, print debug info, only scan one subreddit, and force the script to crash on Exceptions
 DEBUG = False
 # These are the persistant variables stored in config.ini
-nicecount = int(config['Bot Persistant Storage']['nice'])
 good_bot_count = int(config['Bot Persistant Storage']['good_bot'])
 bad_bot_count = int(config['Bot Persistant Storage']['bad_bot'])
 # These keys provide authentication to prove that it's me when I query these respective web services
@@ -95,7 +94,6 @@ with open('auto_generated_replies.txt') as file:
 print(f'''Initializing bot with the following paramaters:
 DEBUG: {DEBUG}
 Subreddit: {subreddit}
-NiceCount: {nicecount}
 good_bot_count: {good_bot_count}
 bad_bot_count: {bad_bot_count}
 Reddit Login: {reddit.user.me().name}
@@ -377,7 +375,6 @@ def get_translation(comment):
 
 
 def interact_with_replies():
-    global nicecount
     global good_bot_count
     global bad_bot_count
     for comment in reddit.inbox.unread():
@@ -403,7 +400,7 @@ def interact_with_replies():
             if comment.body.lower() == '!delete':
                 comment.mark_read()
                 parent = comment.parent()
-                if comment.author.name == parent.parent().author.name or comment.author in comment.subreddit.moderator():
+                if comment.author.name == parent.parent().author.name or comment.author in comment.subreddit.moderator() or comment.author.name == 'benjixinator':
                     try:
                         parent.edit(
                             f'u/{comment.author.name} has requested this comment be **deleted**.')
@@ -449,7 +446,6 @@ def log(data):
 
 def main():
     try:
-        global nicecount
         global good_bot_count
         global bad_bot_count
         global blacklisted_subreddits
@@ -646,10 +642,8 @@ def reply(comment, message, type='REPLY'):
 
 
 def save_variables():
-    global nicecount
     global good_bot_count
     global bad_bot_count
-    config['Bot Persistant Storage']['nice'] = str(nicecount)
     config['Bot Persistant Storage']['good_bot'] = str(good_bot_count)
     config['Bot Persistant Storage']['bad_bot'] = str(bad_bot_count)
     with open('config.ini', 'w') as configfile:
