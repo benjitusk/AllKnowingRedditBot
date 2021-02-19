@@ -148,7 +148,14 @@ def delete_negative_comments():
             c.delete()
 
 
+def escape_json(data):
+    data = data.replace('\n', '\\n')
+    data = data.replace('\"', '\\\"')
+    return data
+
 # Take a YouTube timestamp and turn it into DOW MON DOM 24HR YYYY format
+
+
 def format_timestamp(ts):
     return time.ctime(datetime.datetime.strptime(
         ts, "%Y-%m-%dT%H:%M:%SZ").timestamp())
@@ -336,8 +343,7 @@ def get_translation(comment):
     # For some reason, the api breaks on multi-line comments, so for now, we're just replacing all the newlines with a series of charaters that no one would ever put in the comment.
     # This is a very hacky and crappy solution, but this is what i'm doing for now.
     # its all numbers so it doesnt get messed up in the translation
-    hacky_newline_escape_string = '\\n'
-    to_translate = to_translate.replace('\n', hacky_newline_escape_string)
+    to_translate = escape_json(to_translate)
     # Step 2: get language to translate to
     body = get_arguments('!translate', comment.body)
     try:
@@ -346,25 +352,23 @@ def get_translation(comment):
         language = 'en'
     # Step 3: Query the translation API
     headers = {'Content-Type': 'application/json', }
-    data = '{"text": ["' + to_translate + '"], "target":"' + language + '"}'
-    data = data.encode('utf-8')
+    data_pre_encoding = '{"text": ["' + \
+        to_translate + '"], "target":"' + language + '"}'
+    data = data_pre_encoding.encode('utf-8')
     url = 'https://api.us-east.language-translator.watson.cloud.ibm.com/instances/84903ddb-1980-49f0-9a88-52255104c2af/v3/translate?version=2018-05-01'
     response = requests.post(url, headers=headers,
                              data=data, auth=('apikey', API_KEYS['IBM']))
-    # if response.status_code != 200:
-    #     return f'Sorry, `{language}` is not a valid 2 letter [ISO 639-1 language code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Try again!'
-    json = response.json()
+    response_json = response.json()
     try:
-        translation = json['translations'][0]['translation']
+        translation = response_json['translations'][0]['translation']
     # this means that there was no translation in the response, meaning there was an error.
     except KeyError:
-        if json['code'] == 404:
+        if response_json['code'] == 404:
             return f'Sorry, `{language}` is not a valid 2 letter [ISO 639-1 language code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Try again!'
-        if json['code'] == 400:
-            return f'Sorry, an error occured. Here is the debug information: `{json}`'
+        if response_json['code'] == 400:
+            return f'Sorry, an error occured. Here is the debug information: `{response_json}`\n\nThis is the unencoded data sent to the API: `{data_pre_encoding}`\n\nAnd this is the raw encoded data: `{data}`'
 
     # Un-escape the newlines
-    translation = translation.replace(hacky_newline_escape_string, '\n\n')
 
     translation += '''\n
 ^(By benjixinator. Looking for collaborators, send me a chat message, check out the [Github](https://github.com/benjitusk/AllKnowingRedditBot))
