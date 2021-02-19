@@ -27,6 +27,7 @@ Command|Arguments|Explanation|Example (or sample reply)
 !lyrics|\<Song Title\>/\<Song Artist\>|Gets the lyrics of the provided song and artist|!lyrics happier/marshmello
 !random|N/A|Replies with a random number 1-1000|!random
 !snapple|N/A/|Geta a real snapple fact|!snapple
+!translate|[2 letter [ISO 639-1 language code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)]|Translates the parent post or comment to the provided language. If no language is provided, it's translated to english.|!translate es (for spanish)
 !youtube|\<search query\> [#\<num_of_results\>]|Searches youtube for the provided query, and replies with the top 5 results, unless otherwise specified in `num_of_reuslts`|!youtube never gonna give you up #7
 
 \*Gasping for breath\*
