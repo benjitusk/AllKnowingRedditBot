@@ -261,17 +261,14 @@ def get_footer():
     # Literally just return this string:
     # and include whatever get_advice() gives us at the end.
     # thats it.
-    return f'''
+    return '''
 
 ---
 
-^(Hey, I'm looking for people to [collaborate](https://github.com/benjitusk/AllKnowingRedditBot) with on this bot, if you're intersted, send me a DM [not a PM, use the chat please]!)
+^(Hey, I'm looking for people to [collaborate](https://github.com/benjitusk/AllKnowingRedditBot) with on this bot, if you're intersted, a pm to [benjixinator](https://www.reddit.com/user/benjixinator) [not a PM, use the chat please]!)
 
 ^(For a quick overview of what I can do, comment "!features" for a list.)
-
-^(Sick of this bot? Have a moderator comment "!blacklist subreddit" to this comment, or just reply "!blacklist" to blacklist just your account.)
-
-^({get_advice()})'''
+'''
 
 
 # Query the GIPHY API and return the gif URL
@@ -311,7 +308,7 @@ def get_lyrics(body):
         song_artist = song.artist
         # Double the newline chars, because markdown
         full_lyrics = full_lyrics.replace('\n', '\n\n')
-        return f'The top result for lyrics snippet `{lyrics_snippet}` is {song_name} by {song_artist}:\n\n---\n\n{full_lyrics}\n\n---\n\nLyrics by MetroLyrics + {get_footer()}'
+        return f'The top result for lyrics snippet `{lyrics_snippet}` is {song_name} by {song_artist}:\n\n---\n\n{full_lyrics}\n\n---\n\nLyrics by MetroLyrics {get_footer()}'
         tswift
     if len(song_data) == 2:
         title = song_data[0]
@@ -323,7 +320,7 @@ def get_lyrics(body):
         except tswift.TswiftError:
             return f'Hmm, no results turned up for `{title}` by `{artist}`... maybe you spelled something wrong, or maybe the lyrics are not in the database.{get_footer()}'
         else:
-            return f'Here are the lyrics for {song_name} by {song_artist}:\n\n---\n\n{full_lyrics}\n\n---\n\nLyrics by MetroLyrics + {get_footer()}'
+            return f'Here are the lyrics for {song_name} by {song_artist}:\n\n---\n\n{full_lyrics}\n\n---\n\nLyrics by MetroLyrics {get_footer()}'
     if len(song_data) > 2:
         return 'You need to format your comment as such:\n\n!lyrics (<title> / <artist>) | (<lyrics snippet>)'
 
