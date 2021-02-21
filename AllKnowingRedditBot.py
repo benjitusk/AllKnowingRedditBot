@@ -311,7 +311,7 @@ def get_lyrics(body):
         song_artist = song.artist
         # Double the newline chars, because markdown
         full_lyrics = full_lyrics.replace('\n', '\n\n')
-        return f'Here are the lyrics for {song_name} by {song_artist}:\n\n---\n\n{full_lyrics}\n\n---\n\nLyrics by MetroLyrics + {get_footer()}'
+        return f'The top result for lyrics snippet `{lyrics_snippet}` is {song_name} by {song_artist}:\n\n---\n\n{full_lyrics}\n\n---\n\nLyrics by MetroLyrics + {get_footer()}'
         tswift
     if len(song_data) == 2:
         title = song_data[0]
@@ -325,7 +325,7 @@ def get_lyrics(body):
         else:
             return f'Here are the lyrics for {song_name} by {song_artist}:\n\n---\n\n{full_lyrics}\n\n---\n\nLyrics by MetroLyrics + {get_footer()}'
     if len(song_data) > 2:
-        return 'You need to format your comment as such:\n\n!lyrics <title> / <artist>'
+        return 'You need to format your comment as such:\n\n!lyrics (<title> / <artist>) | (<lyrics snippet>)'
 
 
 def get_random_fact():
