@@ -304,7 +304,7 @@ def get_lyrics(body):
         return 'You need to format your comment as such:\n\n!lyrics <title> / <artist>'
     song_data = song_data.split('/')
     if len(song_data) == 1:
-        lyrics_snippet = song_data[1]
+        lyrics_snippet = song_data[0]
         song = tswift.Song.find_song(lyrics_snippet)
         full_lyrics = song.lyrics
         song_name = song.title
