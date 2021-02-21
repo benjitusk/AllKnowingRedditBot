@@ -493,8 +493,12 @@ def main():
     except KeyboardInterrupt:
         print('\nKeyboardInterrupt: Cleaning up...')
         background_tasks()
-        mydb.commit()
-        mydb.close()
+        try:
+            mydb.commit()
+            mydb.close()
+        except mysql.connector.InterfaceError:
+            # Hmm, seems like the DB timed out.
+            pass
         print('Bye!')
         return
     except Exception as e:
