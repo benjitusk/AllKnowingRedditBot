@@ -5,6 +5,7 @@ import re
 import sys
 import praw
 import time
+import tswift
 import random
 import datetime
 import requests
@@ -302,16 +303,29 @@ def get_lyrics(body):
     if len(song_data) == 0:
         return 'You need to format your comment as such:\n\n!lyrics <title> / <artist>'
     song_data = song_data.split('/')
-    if len(song_data) != 2:
+    if len(song_data) == 1:
+        lyrics_snippet = song_data[1]
+        song = tswift.Song.find_song(lyrics_snippet)
+        full_lyrics = song.lyrics
+        song_name = song.title
+        song_artist = song.artist
+        # Double the newline chars, because markdown
+        full_lyrics = full_lyrics.replace('\n', '\n\n')
+        return f'Here are the lyrics for {song_name} by {song_artist}:\n\n---\n\n{full_lyrics}\n\n---\n\nLyrics by MetroLyrics + {get_footer()}'
+        tswift
+    if len(song_data) == 2:
+        title = song_data[0]
+        artist = song_data[1]
+        song = tswift.Song(title, artist)
+        try:
+            # Double the newline chars because markdown
+            full_lyrics = song.lyrics.replace('\n', '\n\n')
+        except tswift.TswiftError:
+            return f'Hmm, no results turned up for `{title}` by `{artist}`... maybe you spelled something wrong, or maybe the lyrics are not in the database.{get_footer()}'
+        else:
+            return f'Here are the lyrics for {song_name} by {song_artist}:\n\n---\n\n{full_lyrics}\n\n---\n\nLyrics by MetroLyrics + {get_footer()}'
+    if len(song_data) > 2:
         return 'You need to format your comment as such:\n\n!lyrics <title> / <artist>'
-    title = song_data[0]
-    artist = song_data[1]
-    lyrics = requests.get(
-        f'https://api.musixmatch.com/ws/1.1/matcher.lyrics.get?format=json&callback=callback&q_track={title}&q_artist={artist}&apikey={API_KEYS["MUSIXMATCH"]}').json()['message']
-    if lyrics['header']['status_code'] != 200:
-        return f'Hmm, no results turned up for `{title}` by `{artist}`... maybe you spelled something wrong, or maybe the lyrics are not in the database.{get_footer()}'
-    else:
-        return lyrics['body']['lyrics']['lyrics_body'] + '\n\nLyrics by musiXmatch' + get_footer()
 
 
 def get_random_fact():
