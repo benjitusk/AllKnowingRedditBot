@@ -481,21 +481,20 @@ def main():
                 if DEBUG:
                     print(f'Blacklist: r/{comment.subreddit.display_name}\n')
                 continue
+            if '>!' in comment.body and '!<' in comment.body:
+                continue
             if not DEBUG:
                 delete_last_line()
             print(f'Scanned {comment_count} comments...')
             process_comments(comment)
-            if comment.author.name == 'generic_reddit_bot_2':
-                continue
     except KeyboardInterrupt:
         print('\nKeyboardInterrupt: Cleaning up...')
         background_tasks()
         try:
             mydb.commit()
-            mydb.close()
-        except mysql.connector.InterfaceError:
-            # Hmm, seems like the DB timed out.
+        except Exception:  # Hmm, seems like the DB timed out.
             pass
+        mydb.close()
         print('Bye!')
         return
     except Exception as e:
