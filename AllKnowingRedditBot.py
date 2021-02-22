@@ -307,6 +307,7 @@ def get_lyrics(body):
         song_name = song.title
         song_artist = song.artist
         # Double the newline chars, because markdown
+        full_lyrics = full_lyrics.replace('\n\n', '\n\---\n')
         full_lyrics = full_lyrics.replace('\n', '\n\n')
         return f'The top result for lyrics snippet `{lyrics_snippet}` is {song_name} by {song_artist}:\n\n---\n\n{full_lyrics}\n\n---\n\nLyrics by MetroLyrics {get_footer()}'
         tswift
@@ -562,11 +563,13 @@ def process_comments(comment):
     # FEATURES
     if '!features' in body:
         features = '''
-### Current features: (<mandatory arguments> [optional arguments]):
+Key: <mandatory arguments>, [optional arguments], (option A) | (option B) 
+
+# Current features:
 
 * !gif [search term]
 
-* !lyrics <song name>/<song artist>
+* !lyrics (<title> [by <artist>]) | (<snippet of lyrics>)
 
 * !define <word>
 
@@ -585,7 +588,7 @@ def process_comments(comment):
 * !insult
 ---
 
-### Upcoming features:
+# Upcoming features:
 
 * Wikipedia Search
 
