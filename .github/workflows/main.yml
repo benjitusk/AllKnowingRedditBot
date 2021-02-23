@@ -1,23 +1,29 @@
-name: rsync-deploy-action tester
+# This is a basic workflow to help you get started with Actions
 
+name: Deploy
+
+# Controls when the action will run. 
 on:
+  # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [main]
+    branches: [ main ]
 
 jobs:
-  hello_world_rsync_deploy:
+  deploy:
+    name: Deploy
     runs-on: ubuntu-latest
-    name: A job to test rsync-deploy-action
+
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@main
-      - name: Tester
-        uses: yeshan333/rsync-deploy-action@main
-        id: rsync-deploy-action
+      - name: Checkout code
+        uses: actions/checkout@vmain
+
+      - name: Deploy to sandbox via rsync
+        uses: trendyminds/github-actions-rsync@master
         with:
-          ssh_login_username: ${{secrets.REMOTE_USER}}
-          remote_server_ip: ${{secrets.REMOTE_HOST}}
-          ssh_port: 22
-          ssh_private_key: ${{secrets.SERVER_SSH_KEY}}
-          source_path: /
-          destination_path: ${{ secrets.REMOTE_TARGET }}
+          RSYNC_OPTIONS: -avzr --delete --exclude node_modules --exclude '.git*'
+          RSYNC_TARGET: ${{secrets.REMOTE_TARGET}}
+          RSYNC_SOURCE: /
+        env:
+          SSH_PRIVATE_KEY: ${{secrets.SERVER_SSH_KEY}}
+          SSH_USERNAME: ${{secrets.REMOTE_USER}}
+          SSH_HOSTNAME: ${{secrets.REMOTE_HOST}}
