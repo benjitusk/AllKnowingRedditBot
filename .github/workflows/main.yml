@@ -16,14 +16,15 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@main
-
-      - name: Deploy to sandbox via rsync
-        uses: trendyminds/github-actions-rsync@master
-        with:
-          RSYNC_OPTIONS: -avzr --delete --exclude node_modules --exclude '.git*'
-          RSYNC_TARGET: ${{secrets.REMOTE_TARGET}}
-          RSYNC_SOURCE: /
+        
+      - name: deploy to server
+        uses: AEnterprise/rsync-deploy@v1.0
         env:
-          SSH_PRIVATE_KEY: ${{secrets.SERVER_SSH_KEY}}
-          SSH_USERNAME: ${{secrets.REMOTE_USER}}
-          SSH_HOSTNAME: ${{secrets.REMOTE_HOST}}
+          DEPLOY_KEY: ${{ secrets.SERVER_SSH_KEY }}
+          ARGS: "-e -c -r --delete"
+          SERVER_PORT: 22
+          FOLDER: "./"
+          SERVER_IP: ${{ secrets.REMOTE_HOST }}
+          USERNAME: ${{ secrets.REMOTE_USER }}
+          SERVER_DESTINATION: ${{ secrets.REMOTE_TARGET }}
+
