@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@vmain
+        uses: actions/checkout@main
 
       - name: Deploy to sandbox via rsync
         uses: trendyminds/github-actions-rsync@master
