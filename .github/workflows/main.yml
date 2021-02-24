@@ -6,6 +6,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@main
       - name: ssh deploy
         uses: easingthemes/ssh-deploy@v2.1.5
         with:
