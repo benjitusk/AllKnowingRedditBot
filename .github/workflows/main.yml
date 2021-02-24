@@ -23,7 +23,7 @@ jobs:
           # Remote port
           REMOTE_PORT: 22
           # Target directory
-          TARGET: "/home/${{secrets.REMOTE_USER}}/reddit_bots/Akrb"
+          TARGET: ${{secrets.REMOTE_TARGET}}
           # Arguments to pass to rsync
           ARGS: "-rltgoDzvO --delete" # optional, default is -rltgoDzvO
       - name: Restart bot to enact changes
@@ -39,4 +39,4 @@ jobs:
             # Print a notice to the screen that the script was relaunched by GitHub Actions
             screen -S akrb -p 0 -X stuff "# Script Relaunched by GitHub Actions...^M"
             # Reconnect to Screen session and relaunch the bot, then send ^M, to execute the command
-            screen -S akrb -p 0 -X stuff "./AllKnowingRedditBot.py^M"
+            screen -S akrb -p 0 -X stuff "${{secrets.REMOTE_TARGET}}/AllKnowingRedditBot.py^M"
