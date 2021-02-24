@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 # ^ This line tells my computer to execute this file as python3
 # Imports
+import os
 import re
 import sys
 import praw
@@ -19,8 +20,12 @@ from nltk.tokenize import word_tokenize
 # These 2 lines are for getting persistant variables from config.ini (not on GitHub)
 config = configparser.ConfigParser()
 config.read('config.ini')
-# If DEBUG is True, print debug info, only scan one subreddit, and force the script to crash on Exceptions
-DEBUG = False
+# If we are testing on local machine
+if os.getenv('PRODUCTION'):
+    DEBUG = False
+else:
+    # If DEBUG is True, print debug info, only scan one subreddit, and force the script to crash on Exceptions
+    DEBUG = True
 # These are the persistant variables stored in config.ini
 good_bot_count = int(config['Bot Persistant Storage']['good_bot'])
 bad_bot_count = int(config['Bot Persistant Storage']['bad_bot'])
@@ -44,8 +49,11 @@ if DEBUG:
     # Run background_tasks() every 30 seconds so we don't have to wait so long
     time_interval = 30
 else:
-    # Otherwise, operate as usual and watch r/all
-    subreddit = 'all'
+    # Otherwise, operate as usual
+    # and watch every subreddit EXCEPT r/testingground4bots
+    # so as to not interfere with a possible alterante existing
+    # debug session
+    subreddit = 'all-testingground4bots'
     # And run background_tasks() only once every 2 minutes
     time_interval = 120
 
@@ -563,7 +571,7 @@ def process_comments(comment):
     # FEATURES
     if '!features' in body:
         features = '''
-Key: <mandatory arguments>, [optional arguments], (option A) | (option B) 
+Key: <mandatory arguments>, [optional arguments], (option A) | (option B)
 
 # Current features:
 
