@@ -14,17 +14,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@main
+    - name: Checkout code
+      uses: actions/checkout@main
         
-      - name: deploy to server
-        uses: AEnterprise/rsync-deploy@v1.0
-        env:
-          DEPLOY_KEY: ${{ secrets.SERVER_SSH_KEY }}
-          ARGS: "-e -c -r --delete"
-          SERVER_PORT: 22
-          FOLDER: "./"
-          SERVER_IP: ${{ secrets.REMOTE_HOST }}
-          USERNAME: ${{ secrets.REMOTE_USER }}
-          SERVER_DESTINATION: ${{ secrets.REMOTE_TARGET }}
-
+    - name: Sync
+      env:
+        dest: '${{secrets.REMOTE_USER}}@${{secrets.REMOTE_HOST}}:${{secrets.REMOTE_TARGET}}'
+      run: |
+        echo "${{secrets.SERVER_SSH_KEY}}" > deploy_key
+        chmod 600 ./deploy_key
+        rsync -chav --delete \
+          -e 'ssh -i ./deploy_key -o StrictHostKeyChecking=no' \
+          --exclude /deploy_key \
+          --exclude /.git/ \
+          --exclude /.github/ \
+          --exclude /node_modules/ \
+          ./ ${{env.dest}}
