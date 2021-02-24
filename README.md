@@ -10,9 +10,9 @@ A: Well, I'm so glad you asked!
 A: Yup, you have no idea what you just walked into...
 
 Table Key:
-* `\<argument\>` means that you must include this information. If you don't, the command will fail.
+* `<argument>` means that you must include this information. If you don't, the command will fail.
 * `[argument]` means that you don't have to put any information there, but it might help if you do
-* `[some_symbol_here \<argument\>]` means that you don't have to include anything there, but if you do, you *must* format it as such.
+* `[some_symbol_here <argument>]` means that you don't have to include anything there, but if you do, you *must* format it as such.
     * For example, if the symbol is `#`, then you gotta put the argument _after_ the `#`. This is used when a space is not enough to separate arguments from each other, like when searching the lyrics to a song, because the title of a song can have spaces in it.
 * `(option a) | (option b)` means that you have to choose between the two options
 
@@ -21,16 +21,16 @@ Command|Arguments|Explanation|Example (or sample reply)
 !advice|N/A|Replies with sagely advice|Once you find a really good friend don't do anything that could mess up your friendship.
 !cursethis|N/A|Replies with a c̸̡̤͓̠ͧ͌̂͠ư̢̛̝̫̂̄̿͡r̮̗̈́ͧ̈̕̕͢͝ș̹͚̻̆́̅̄͜e͇͉͖̍̃́ͭ͘͞d̰̼͓͌̃ͨ͟͡͞ version of the above comment or post|!c̻ͯ͡u̹ͦ͢r̯ͩ͐s̡͖̓ė͓̫t̶̩͕h̷͊̚i̢̼ͪs͍̲͋
 !dadjoke|N/A|Replies with a random dadjoke from icanhazdadjoke.com|I went to a book store and asked the saleswoman where the Self Help section was, she said if she told me it would defeat the purpose.
-!define|\<word\>|Replies with the definition of the supplied word. If no word is supplied, it defines `null`|!define something
+!define|<word>|Replies with the definition of the supplied word. If no word is supplied, it defines `null`|!define something
 !features|N/A|Replies with a condensed version of this table|!features
 !gif|[Search term]|Search Giphy for a gif. If no word is supplied, get a random gif|!gif peanut butter jelly time
 !insult|**Coming soon:** ['parent']|Absolutely roasts the living daylights out of you. **NOTE: if 'parent' is supplied as an optional argument, the reply will be sent to the parent comment or post. If a username is used in place of 'parent', that user will be sent a PM containing the roast.**|Your so ugly when you popped out the doctor said aww what a treasure and your mom said yeah lets bury it.
 !joke|N/A|Gets a joke. Similar to !dadjoke, but uses a different API| I dreamed about drowning in an ocean made out of orange soda last night. It took me a while to work out it was just a Fanta sea.
-!lyrics|(\<Song Title\>/\<Song Artist\>) \| (\<Lyrics snippet\>) |Gets the lyrics of the provided song and artist, OR takes the provided snippet of lyrics and tries to find the full song |!lyrics happier/marshmello
+!lyrics|(<Song Title>/<Song Artist>) \| (<Lyrics snippet>) |Gets the lyrics of the provided song and artist, OR takes the provided snippet of lyrics and tries to find the full song |!lyrics happier/marshmello
 !random|N/A|Replies with a random number 1-1000|!random
 !snapple|N/A/|Geta a real snapple fact|!snapple
 !translate|[2 letter [ISO 639-1 language code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)]|Translates the parent post or comment to the provided language. If no language is provided, it's translated to english.|!translate es (for spanish)
-!youtube|\<search query\> [#\<num_of_results\>]|Searches youtube for the provided query, and replies with the top 5 results, unless otherwise specified in `num_of_reuslts`|!youtube never gonna give you up #7
+!youtube|<search query> [#<num_of_results>]|Searches youtube for the provided query, and replies with the top 5 results, unless otherwise specified in `num_of_reuslts`|!youtube never gonna give you up #7
 
 \*Gasping for breath\*
 
