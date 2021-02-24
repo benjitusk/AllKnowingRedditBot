@@ -13,7 +13,8 @@ jobs:
           REMOTE_HOST: ${{secrets.REMOTE_HOST}}
           REMOTE_USER: ${{secrets.REMOTE_USER}}
           REMOTE_PORT: 22
-          TARGET: ${{secrets.REMOTE_TARGET}}/
+          SOURCE: "server/"
+          TARGET: ${{secrets.REMOTE_TARGET}}"/"
           ARGS: "-rltgoDzvO" # optional, default is -rltgoDzvO
       - name: Restart bot to enact changes
         uses: appleboy/ssh-action@master
