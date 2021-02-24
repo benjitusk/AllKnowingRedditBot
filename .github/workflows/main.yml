@@ -6,9 +6,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: ssh deploy
       - uses: actions/checkout@main
-      - uses: easingthemes/ssh-deploy@v2.1.5
+      - name: ssh deploy
+        uses: easingthemes/ssh-deploy@v2.1.5
         with:
           SSH_PRIVATE_KEY: ${{secrets.SERVER_SSH_KEY}}
           REMOTE_HOST: ${{secrets.REMOTE_HOST}}
