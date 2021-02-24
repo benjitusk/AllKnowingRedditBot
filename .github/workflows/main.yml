@@ -22,10 +22,8 @@ jobs:
           REMOTE_USER: ${{secrets.REMOTE_USER}}
           # Remote port
           REMOTE_PORT: 22
-          # Source directory
-          SOURCE: /
           # Target directory
-          TARGET: ${{secrets.REMOTE_TARGET}}
+          TARGET: /home/${{secrets.REMOTE_USER}}/reddit_bots/Akrb
           # Arguments to pass to rsync
           # ARGS: # optional, default is -rltgoDzvO
       - name: Restart bot to enact changes
