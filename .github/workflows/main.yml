@@ -38,5 +38,7 @@ jobs:
           script: |
             # Connect to Screen session running the bot and send a KeyboardInterrupt
             screen -S akrb -p 0 -X stuff "^C"
+            # Print a notice to the screen that the script was relaunched by GitHub Actions
+            screen -S akrb -p 0 -X stuff "# Script Relaunched by GitHub Actions...^M"
             # Reconnect to Screen session and relaunch the bot, then send ^M, to execute the command
             screen -S akrb -p 0 -X stuff "./AllKnowingRedditBot.py^M"
