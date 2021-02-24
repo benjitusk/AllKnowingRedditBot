@@ -7,32 +7,17 @@ on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
     branches: [ main ]
-
 jobs:
-  deploy:
-    name: Deploy
+  build:
+    name: Build
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@main
-        
-    - name: SFTP Deploy
-      # You may pin to the exact commit or the version.
-      # uses: wlixcc/SFTP-Deploy-Action@cf8d9e5b504ce4aab358e6231495c72a7dc18dcd
-      uses: wlixcc/SFTP-Deploy-Action@1.1
+    - name: executing remote ssh commands using password
+      uses: appleboy/ssh-action@master
       with:
-        # username
-        username: ${{secrets.REMOTE_USER}}
-        # your sftp server
-        server: ${{secrets.REMOTE_HOST}}
-        # your sftp server port, default to 22
-        port: 22 # default is 22
-        # you can copy private_key from your *.pem file, keep format
-        ssh_private_key: ${{secrets.SERVER_SSH_KEY}}
-        # will put all file under this path
-        local_path: / # default is ./*
-        # files will copy to under remote_path
-        remote_path: ${{secrets.REMOTE_TARGET}} # default is /
-        # sftp args
-        # args: # optional
+        host: ${{ secrets.REMOTE_HOST }}
+        username: ${{ secrets.REMOTE_USER }}
+        key: ${{secrets.SERVER_SSH_KEY}}
+        #password: ${{ secrets.PASSWORD }}
+        port: 22
+        script: echo 'success!' > ~/output.txt
