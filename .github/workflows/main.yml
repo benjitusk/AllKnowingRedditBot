@@ -23,9 +23,9 @@ jobs:
           # Remote port
           REMOTE_PORT: 22
           # Target directory
-          TARGET: /home/${{secrets.REMOTE_USER}}/reddit_bots/Akrb
+          TARGET: "/home/${{secrets.REMOTE_USER}}/reddit_bots/Akrb"
           # Arguments to pass to rsync
-          # ARGS: # optional, default is -rltgoDzvO
+          ARGS: "-rltgoDzvO --delete" # optional, default is -rltgoDzvO
       - name: Restart bot to enact changes
         uses: appleboy/ssh-action@master
         with:
