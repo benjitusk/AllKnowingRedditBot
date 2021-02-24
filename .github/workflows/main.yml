@@ -17,16 +17,22 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@main
         
-    - name: Sync
-      env:
-        dest: '${{secrets.REMOTE_USER}}@${{secrets.REMOTE_HOST}}:${{secrets.REMOTE_TARGET}}'
-      run: |
-        echo "${{secrets.SERVER_SSH_KEY}}" > deploy_key
-        chmod 600 ./deploy_key
-        rsync -chav --delete \
-          -e 'ssh -i ./deploy_key -o StrictHostKeyChecking=no' \
-          --exclude /deploy_key \
-          --exclude /.git/ \
-          --exclude /.github/ \
-          --exclude /node_modules/ \
-          ./ ${{env.dest}}
+    - name: SFTP Deploy
+      # You may pin to the exact commit or the version.
+      # uses: wlixcc/SFTP-Deploy-Action@cf8d9e5b504ce4aab358e6231495c72a7dc18dcd
+      uses: wlixcc/SFTP-Deploy-Action@1.1
+      with:
+        # username
+        username: ${{secrets.REMOTE_USER}}
+        # your sftp server
+        server: ${{secrets.REMOTE_HOST}}
+        # your sftp server port, default to 22
+        port: 22 # default is 22
+        # you can copy private_key from your *.pem file, keep format
+        ssh_private_key: ${{secrets.SERVER_SSH_KEY}}
+        # will put all file under this path
+        local_path: / # default is ./*
+        # files will copy to under remote_path
+        remote_path: ${{secrets.REMOTE_TARGET}} # default is /
+        # sftp args
+        # args: # optional
