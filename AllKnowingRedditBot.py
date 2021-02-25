@@ -676,6 +676,7 @@ def save_variables():
 
 
 def search_youtube(query):
+    query = str(query)  # JUST in case...
     query = query.split('#')
     max_results = 5
     if len(query) > 1:
