@@ -11,10 +11,12 @@ import random
 import datetime
 import requests
 import traceback
+import pytesseract
 import configparser
 import mysql.connector
 from zalgo_text import zalgo
 from nltk.tokenize import word_tokenize
+from PIL import UnidentifiedImageError, Image
 
 # Config and global variables
 # These 2 lines are for getting persistant variables from config.ini (not on GitHub)
