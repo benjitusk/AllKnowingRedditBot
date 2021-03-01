@@ -394,6 +394,14 @@ def get_translation(comment):
     return translation
 
 
+def image_from_url(url):
+    try:
+        image = Image.open(requests.get(url, stream=True).raw)
+    except UnidentifiedImageError:
+        image = None
+    return image
+
+
 def interact_with_replies():
     global good_bot_count
     global bad_bot_count
