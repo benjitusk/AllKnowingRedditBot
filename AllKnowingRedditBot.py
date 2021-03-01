@@ -717,6 +717,20 @@ def search_youtube(query):
     return formatted_response
 
 
+def transcribe_image(comment):
+    # We need to get the image to transcribe.
+    # Right now, we're assuming the image is in the parent post.
+    parent = comment.submission
+    image_url = parent.url
+    image = image_from_url(image_url)
+    # Make sure the url actually points to an image
+    if image == None:
+        return 'Whoops, I could not find an image at this URL. If this seems like an error, please send a message to benjixinator. Thanks!'
+    text = 'The following text was found in this image:\n\n' + \
+        pytesseract.image_to_string(image)
+    return text
+
+
 def write_to_log(data):
     with open('bot.log', 'a') as log_file:
         log_file.write(f'[{time.ctime()}]:\t{data}\n')
