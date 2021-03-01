@@ -59,6 +59,7 @@ else:
     # And run background_tasks() only once every 2 minutes
     time_interval = 120
 
+# Find a way to implement this or phase it out!
 # Get an instance of an authenticated MySQL session
 # So I can store things in a data persistant method accessable anywhere on my computer (MySQL)
 # mydb = mysql.connector.connect(
