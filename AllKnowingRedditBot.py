@@ -230,6 +230,7 @@ def get_dadjoke():
 # I'll add comments to it later...
 # No really, I will.
 def get_definition(word='null'):
+    # Set up the url to call
     url = f'https://api.dictionaryapi.dev/api/v2/entries/en/{word}'
     data = requests.get(url).json()
     if 'title' in data:
