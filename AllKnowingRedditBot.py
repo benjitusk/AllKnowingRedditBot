@@ -633,8 +633,12 @@ Key: <mandatory arguments>, [optional arguments], (option A) | (option B)
     if '!snapple' in body:
         reply(comment, get_random_fact(), 'SNAPPLE')
 
-    # Translate
+    # TRANSCRIBE
+    if '!transcribe' in body:
+        image_transcription = transcribe_image(comment)
+        reply(comment, image_transcription, 'TRANSCRIBE')
 
+    # Translate
     if '!translate' in body:
         reply(comment, get_translation(comment), 'TRANSLATE')
 
