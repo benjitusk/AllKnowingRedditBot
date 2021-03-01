@@ -725,7 +725,7 @@ def transcribe_image(comment):
     image = image_from_url(image_url)
     # Make sure the url actually points to an image
     if image == None:
-        return 'Whoops, I could not find an image at this URL. If this seems like an error, please send a message to benjixinator. Thanks!'
+        return 'Whoops, I could not find an image containing text at this URL. If this seems like an error, please send a message to benjixinator. Thanks!'
     text = 'The following text was found in this image:\n\n' + \
         pytesseract.image_to_string(image)
     return text
