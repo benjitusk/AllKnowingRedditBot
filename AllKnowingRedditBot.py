@@ -13,7 +13,7 @@ import requests
 import traceback
 import pytesseract
 import configparser
-import mysql.connector
+# import mysql.connector
 from zalgo_text import zalgo
 from nltk.tokenize import word_tokenize
 from PIL import UnidentifiedImageError, Image
@@ -61,15 +61,15 @@ else:
 
 # Get an instance of an authenticated MySQL session
 # So I can store things in a data persistant method accessable anywhere on my computer (MySQL)
-mydb = mysql.connector.connect(
-    host=config['Authentication']['database host'],
-    user=config['Authentication']['database username'],
-    password=config['Authentication']['database password'],
-    database="reddit"
-)
+# mydb = mysql.connector.connect(
+#     host=config['Authentication']['database host'],
+#     user=config['Authentication']['database username'],
+#     password=config['Authentication']['database password'],
+#     database="reddit"
+# )
 # This allows us to re-use the cursor without being forced to read from it.
 # Honestly, I don't 100% understand, but it works ¯\_(ツ)_/¯
-db = mydb.cursor(buffered=True)
+# db = mydb.cursor(buffered=True)
 # Initialize the table if it does not yet exist in this format:
 # +-----------------+------------+
 # | username (text) | value (int)|
@@ -79,7 +79,7 @@ db = mydb.cursor(buffered=True)
 # | Matthew_Quigley |         13 |
 # | Chuturmaat      |        149 |
 # +-----------------+------------+
-db.execute('CREATE TABLE IF NOT EXISTS nicecount (username TEXT, value INTEGER)')
+# db.execute('CREATE TABLE IF NOT EXISTS nicecount (username TEXT, value INTEGER)')
 # This is sort of a stopwatch to keep track of when the last time we ran background_tasks()
 background_tasks_stopwatch = time.time()
 
@@ -509,11 +509,11 @@ def main():
     except KeyboardInterrupt:
         print('\nKeyboardInterrupt: Cleaning up...')
         background_tasks()
-        try:
-            mydb.commit()
-        except Exception:  # Hmm, seems like the DB timed out.
-            pass
-        mydb.close()
+        # try:
+        # mydb.commit()
+        # except Exception:  # Hmm, seems like the DB timed out.
+        # pass
+        # mydb.close()
         print('Bye!')
         return
     except Exception as e:
