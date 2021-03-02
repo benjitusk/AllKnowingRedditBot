@@ -59,6 +59,34 @@ else:
     # And run background_tasks() only once every 2 minutes
     time_interval = 120
 
+# Move the original reply method to reply_core:
+praw.reddit.Comment.reply_core = praw.reddit.Comment.reply
+
+# Look into if there is a better way to do this...
+
+
+def reply(self, message, type='REPLY'):  # self refers to reddit.comment
+    global auto_generated_replies
+    try:
+        c = self.reply_core(message)
+    except Exception as e:
+        if e.__class__.__name__ == 'Forbidden':
+            print(f'BANNED from r/{self.subreddit.display_name}\n')
+            add_to_blacklist(self.subreddit.display_name)
+        else:
+            print(f'Exception: {e}\n')
+        if DEBUG:
+            raise
+    else:
+        print(f'{type}: https://www.reddit.com{c.permalink}\n')
+        # Add reply to auto_generated_replies list
+        auto_generated_replies.append(c.id)
+        with open('auto_generated_replies.txt', 'a') as agr:
+            agr.write(f'{c.id}\n')
+
+
+# Add extended_reply method to praw.reddit.Comment object
+praw.reddit.Comment.reply = reply
 # Find a way to implement this or phase it out!
 # Get an instance of an authenticated MySQL session
 # So I can store things in a data persistant method accessable anywhere on my computer (MySQL)
@@ -661,25 +689,25 @@ Key: <mandatory arguments>, [optional arguments], (option A) | (option B)
         reply(comment, youtube, 'YOUTUBE')
 
 
-def reply(comment, message, type='REPLY'):
-    # Make sure not to exclude comments that were automatically generated...
-    global auto_generated_replies
-    try:
-        c = comment.reply(message)
-    except Exception as e:
-        if e.__class__.__name__ == 'Forbidden':
-            print(f'BANNED from r/{comment.subreddit.display_name}\n')
-            add_to_blacklist(f'{comment.subreddit.display_name}')
-        else:
-            print(f'Exception: {e}\n')
-        if DEBUG:
-            raise
-    else:
-        print(f'{type}: https://www.reddit.com{c.permalink}\n')
-        # Add reply to auto_generated_replies list
-        auto_generated_replies.append(c.id)
-        with open('auto_generated_replies.txt', 'a') as agr:
-            agr.write(f'{c.id}\n')
+# def reply(comment, message, type='REPLY'):
+#     # Make sure not to exclude comments that were automatically generated...
+#     global auto_generated_replies
+#     try:
+#         c = comment.reply(message)
+#     except Exception as e:
+#         if e.__class__.__name__ == 'Forbidden':
+#             print(f'BANNED from r/{comment.subreddit.display_name}\n')
+#             add_to_blacklist(f'{comment.subreddit.display_name}')
+#         else:
+#             print(f'Exception: {e}\n')
+#         if DEBUG:
+#             raise
+#     else:
+#         print(f'{type}: https://www.reddit.com{c.permalink}\n')
+#         # Add reply to auto_generated_replies list
+#         auto_generated_replies.append(c.id)
+#         with open('auto_generated_replies.txt', 'a') as agr:
+#             agr.write(f'{c.id}\n')
 
 
 def save_variables():
