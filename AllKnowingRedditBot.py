@@ -59,6 +59,34 @@ else:
     # And run background_tasks() only once every 2 minutes
     time_interval = 120
 
+# Move the original reply method to reply_core:
+praw.reddit.Comment.reply_core = praw.reddit.Comment.reply
+
+# Look into if there is a better way to do this...
+
+
+def reply(self, message, type='REPLY'):  # self refers to reddit.comment
+    global auto_generated_replies
+    try:
+        c = self.reply_core(message)
+    except Exception as e:
+        if e.__class__.__name__ == 'Forbidden':
+            print(f'BANNED from r/{self.subreddit.display_name}\n')
+            add_to_blacklist(self.subreddit.display_name)
+        else:
+            print(f'Exception: {e}\n')
+        if DEBUG:
+            raise
+    else:
+        print(f'{type}: https://www.reddit.com{c.permalink}\n')
+        # Add reply to auto_generated_replies list
+        auto_generated_replies.append(c.id)
+        with open('auto_generated_replies.txt', 'a') as agr:
+            agr.write(f'{c.id}\n')
+
+
+# Add extended_reply method to praw.reddit.Comment object
+praw.reddit.Comment.reply = reply
 # Find a way to implement this or phase it out!
 # Get an instance of an authenticated MySQL session
 # So I can store things in a data persistant method accessable anywhere on my computer (MySQL)
@@ -427,8 +455,8 @@ def interact_with_replies():
                 comment.mark_read()
                 with open('blacklisted_users.txt', 'a') as blacklist:
                     blacklist.write(f'{comment.author.name}\n')
-                reply(comment, f'Your username, `{comment.author.name}`, has been added to the user blacklist. To undo this action, pm u/benjixinator.',
-                      f'ADDED u/{comment.author.name} TO THE USER BLACKLIST')
+                comment.reply(f'Your username, `{comment.author.name}`, has been added to the user blacklist. To undo this action, pm u/benjixinator.',
+                              f'ADDED u/{comment.author.name} TO THE USER BLACKLIST')
             if comment.body.lower() == '!delete':
                 comment.mark_read()
                 parent = comment.parent()
@@ -544,7 +572,7 @@ def process_comments(comment):
 
     # ADVICE
     if '!advice' in body:
-        reply(comment, get_advice(), 'ADVICE')
+        comment.reply(get_advice(), 'ADVICE')
 
     # ZALGO
     if '!cursethis' in body:
@@ -565,11 +593,11 @@ def process_comments(comment):
             text = zalgo.zalgo().zalgofy(text)
 
         # Step 4: Reply
-        reply(comment, f'{text}{get_footer()}', 'ZALGO')
+        comment.reply(f'{text}{get_footer()}', 'ZALGO')
 
     # DADJOKE
     if '!dadjoke' in body:
-        reply(comment, get_dadjoke(), 'DADJOKE')
+        comment.reply(get_dadjoke(), 'DADJOKE')
 
     # DEFINE
     if '!define' in body:
@@ -578,7 +606,7 @@ def process_comments(comment):
             arguments = 'null'
         word = word_tokenize(arguments)[0]
         definition = get_definition(word)
-        reply(comment, definition, 'DEFINITION')
+        comment.reply(definition, 'DEFINITION')
 
     # FEATURES
     if '!features' in body:
@@ -615,26 +643,26 @@ Key: <mandatory arguments>, [optional arguments], (option A) | (option B)
 * Send a feature request to the developer
 
 * Random quote'''
-        reply(comment, features, 'FEATURES')
+        comment.reply(features, 'FEATURES')
 
     # GIF
     if '!gif' in body:
         arguments = get_arguments('!gif', body)
         gif = get_gif(arguments)
-        reply(comment, gif, 'GIF')
+        comment.reply(gif, 'GIF')
 
     # INSULT
     if '!insult' in body:
-        reply(comment, get_insult(), 'INSULT')
+        comment.reply(get_insult(), 'INSULT')
 
     # JOKE
     if '!joke' in body:
-        reply(comment, get_joke(), 'JOKE')
+        comment.reply(get_joke(), 'JOKE')
 
     # LYRICS
     if '!lyrics' in body:
         lyrics = get_lyrics(body)
-        reply(comment, lyrics, 'LYRICS')
+        comment.reply(lyrics, 'LYRICS')
 
     # RANDOM
     if '!random' in body:
@@ -643,43 +671,43 @@ Key: <mandatory arguments>, [optional arguments], (option A) | (option B)
 
     # SNAPPLE
     if '!snapple' in body:
-        reply(comment, get_random_fact(), 'SNAPPLE')
+        comment.reply(get_random_fact(), 'SNAPPLE')
 
     # TRANSCRIBE
     if '!transcribe' in body:
         image_transcription = transcribe_image(comment)
-        reply(comment, image_transcription, 'TRANSCRIBE')
+        comment.reply(image_transcription, 'TRANSCRIBE')
 
     # Translate
     if '!translate' in body:
-        reply(comment, get_translation(comment), 'TRANSLATE')
+        comment.reply(get_translation(comment), 'TRANSLATE')
 
     # YOUTUBE
     if '!youtube' in body:
         query = get_arguments('!youtube', body)
         youtube = search_youtube(query)
-        reply(comment, youtube, 'YOUTUBE')
+        comment.reply(youtube, 'YOUTUBE')
 
 
-def reply(comment, message, type='REPLY'):
-    # Make sure not to exclude comments that were automatically generated...
-    global auto_generated_replies
-    try:
-        c = comment.reply(message)
-    except Exception as e:
-        if e.__class__.__name__ == 'Forbidden':
-            print(f'BANNED from r/{comment.subreddit.display_name}\n')
-            add_to_blacklist(f'{comment.subreddit.display_name}')
-        else:
-            print(f'Exception: {e}\n')
-        if DEBUG:
-            raise
-    else:
-        print(f'{type}: https://www.reddit.com{c.permalink}\n')
-        # Add reply to auto_generated_replies list
-        auto_generated_replies.append(c.id)
-        with open('auto_generated_replies.txt', 'a') as agr:
-            agr.write(f'{c.id}\n')
+# def reply(comment, message, type='REPLY'):
+#     # Make sure not to exclude comments that were automatically generated...
+#     global auto_generated_replies
+#     try:
+#         c = comment.reply(message)
+#     except Exception as e:
+#         if e.__class__.__name__ == 'Forbidden':
+#             print(f'BANNED from r/{comment.subreddit.display_name}\n')
+#             add_to_blacklist(f'{comment.subreddit.display_name}')
+#         else:
+#             print(f'Exception: {e}\n')
+#         if DEBUG:
+#             raise
+#     else:
+#         print(f'{type}: https://www.reddit.com{c.permalink}\n')
+#         # Add reply to auto_generated_replies list
+#         auto_generated_replies.append(c.id)
+#         with open('auto_generated_replies.txt', 'a') as agr:
+#             agr.write(f'{c.id}\n')
 
 
 def save_variables():
