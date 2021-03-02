@@ -455,8 +455,8 @@ def interact_with_replies():
                 comment.mark_read()
                 with open('blacklisted_users.txt', 'a') as blacklist:
                     blacklist.write(f'{comment.author.name}\n')
-                reply(comment, f'Your username, `{comment.author.name}`, has been added to the user blacklist. To undo this action, pm u/benjixinator.',
-                      f'ADDED u/{comment.author.name} TO THE USER BLACKLIST')
+                comment.reply(f'Your username, `{comment.author.name}`, has been added to the user blacklist. To undo this action, pm u/benjixinator.',
+                              f'ADDED u/{comment.author.name} TO THE USER BLACKLIST')
             if comment.body.lower() == '!delete':
                 comment.mark_read()
                 parent = comment.parent()
@@ -572,7 +572,7 @@ def process_comments(comment):
 
     # ADVICE
     if '!advice' in body:
-        reply(comment, get_advice(), 'ADVICE')
+        comment.reply(get_advice(), 'ADVICE')
 
     # ZALGO
     if '!cursethis' in body:
@@ -593,11 +593,11 @@ def process_comments(comment):
             text = zalgo.zalgo().zalgofy(text)
 
         # Step 4: Reply
-        reply(comment, f'{text}{get_footer()}', 'ZALGO')
+        comment.reply(f'{text}{get_footer()}', 'ZALGO')
 
     # DADJOKE
     if '!dadjoke' in body:
-        reply(comment, get_dadjoke(), 'DADJOKE')
+        comment.reply(get_dadjoke(), 'DADJOKE')
 
     # DEFINE
     if '!define' in body:
@@ -606,7 +606,7 @@ def process_comments(comment):
             arguments = 'null'
         word = word_tokenize(arguments)[0]
         definition = get_definition(word)
-        reply(comment, definition, 'DEFINITION')
+        comment.reply(definition, 'DEFINITION')
 
     # FEATURES
     if '!features' in body:
@@ -643,26 +643,26 @@ Key: <mandatory arguments>, [optional arguments], (option A) | (option B)
 * Send a feature request to the developer
 
 * Random quote'''
-        reply(comment, features, 'FEATURES')
+        comment.reply(features, 'FEATURES')
 
     # GIF
     if '!gif' in body:
         arguments = get_arguments('!gif', body)
         gif = get_gif(arguments)
-        reply(comment, gif, 'GIF')
+        comment.reply(gif, 'GIF')
 
     # INSULT
     if '!insult' in body:
-        reply(comment, get_insult(), 'INSULT')
+        comment.reply(get_insult(), 'INSULT')
 
     # JOKE
     if '!joke' in body:
-        reply(comment, get_joke(), 'JOKE')
+        comment.reply(get_joke(), 'JOKE')
 
     # LYRICS
     if '!lyrics' in body:
         lyrics = get_lyrics(body)
-        reply(comment, lyrics, 'LYRICS')
+        comment.reply(lyrics, 'LYRICS')
 
     # RANDOM
     if '!random' in body:
@@ -671,22 +671,22 @@ Key: <mandatory arguments>, [optional arguments], (option A) | (option B)
 
     # SNAPPLE
     if '!snapple' in body:
-        reply(comment, get_random_fact(), 'SNAPPLE')
+        comment.reply(get_random_fact(), 'SNAPPLE')
 
     # TRANSCRIBE
     if '!transcribe' in body:
         image_transcription = transcribe_image(comment)
-        reply(comment, image_transcription, 'TRANSCRIBE')
+        comment.reply(image_transcription, 'TRANSCRIBE')
 
     # Translate
     if '!translate' in body:
-        reply(comment, get_translation(comment), 'TRANSLATE')
+        comment.reply(get_translation(comment), 'TRANSLATE')
 
     # YOUTUBE
     if '!youtube' in body:
         query = get_arguments('!youtube', body)
         youtube = search_youtube(query)
-        reply(comment, youtube, 'YOUTUBE')
+        comment.reply(youtube, 'YOUTUBE')
 
 
 # def reply(comment, message, type='REPLY'):
