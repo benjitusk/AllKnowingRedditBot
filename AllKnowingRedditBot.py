@@ -39,8 +39,6 @@ bad_bot_count = int(config['Bot Persistant Storage']['bad_bot'])
 API_KEYS = {
     'GIPHY': config['Authentication']['GIPHY'],  # To get gifs
     'YOUTUBE': config['Authentication']['YOUTUBE'],  # To search YouTube
-    # To get lyrics of songs
-    'MUSIXMATCH': config['Authentication']['musixmatch'],
     'IBM': config['Authentication']['ibm translation'],  # To translate things
 }
 # Log in to Reddit
