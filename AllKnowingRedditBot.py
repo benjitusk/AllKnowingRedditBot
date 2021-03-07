@@ -23,32 +23,42 @@ from nltk.tokenize import word_tokenize
 from PIL import UnidentifiedImageError, Image
 
 # Config and global variables
-# These 2 lines are for getting persistant variables from config.ini (not on GitHub)
+# These 2 lines are for getting persistant variables from config.ini (not on GitHub for obvious security reasons)
 config = configparser.ConfigParser()
 config.read('config.ini')
-# If we are testing on local machine
+
+# The computer that this bot runs on all the time (I'm just gonna call it the server) has
+# an 'environment variable' (its like a variable in python, but it's system-wide.) called 'PRODUCTION'.
+# If an environment variable called 'PRODUCTION' exists and is set to True, then we know
+# that this code is executing on the server. If this environment variable doesn't exist, then
+# it means that this
 if os.getenv('PRODUCTION'):
     DEBUG = False
 else:
+    # However, if this code is not executing on
     # If DEBUG is True, print debug info, only scan one subreddit, and force the script to crash on Exceptions
     DEBUG = True
-# These are the persistant variables stored in config.ini
+# These are the persistant variables stored in config.ini:
+
+# Keep track of how many times someone replies good/bad bot
 good_bot_count = int(config['Bot Persistant Storage']['good_bot'])
 bad_bot_count = int(config['Bot Persistant Storage']['bad_bot'])
+
 # These keys provide authentication to prove that it's me when I query these respective web services
+# I'm putting them into a {dict} just for organization
 API_KEYS = {
     'GIPHY': config['Authentication']['GIPHY'],  # To get gifs
     'YOUTUBE': config['Authentication']['YOUTUBE'],  # To search YouTube
     'IBM': config['Authentication']['ibm translation'],  # To translate things
 }
-# Log in to Reddit
+# Log in to Reddit using the akrb section in praw.ini, a file that contains reddit login info. NOT ON GITHUB
 reddit = praw.Reddit("akrb")
-# This forces the script to conform to reddit's new standards when it comes to editing and submitting posts via the API
+# This forces the bot to conform to reddit's new standards when it comes to editing and submitting posts via the API
 # Basically, it just shuts up the warning that happens when I don't use this.
 reddit.validate_on_submit = True
 # Debug settings...
 if DEBUG:
-    # If DEBUG, to help create a controlled environment, only moniter one subreddit
+    # If DEBUG, only moniter one subreddit to help create a controlled environment
     subreddit = 'testingground4bots'
     # Run background_tasks() every 30 seconds so we don't have to wait so long
     time_interval = 30
