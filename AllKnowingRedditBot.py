@@ -1,21 +1,25 @@
 #!/usr/bin/python3
 # ^ This line tells my computer to execute this file as python3
 # Imports
-import os
-import re
+import os   # For checking if this code is executing on the server or not
+import re   # For processing commands and removing certain charaters
+# For printing special charaters to the terminal (see delete_last_line())
 import sys
-import praw
-import time
-import tswift
-import random
-import datetime
-import requests
-import traceback
-import pytesseract
+import praw  # This is the Reddit API library. See https://praw.readthedocs.io/en/latest for documentation
+import time  # For timestamps in log messages and running tasks every x minutes
+import tswift   # For getting the lyrics of songs. See get_lyrics()
+import random   # For generating random numbers. See !random trigger
+import datetime  # For processing timestamps sent by the YouTube API. See format_timestamp() and search_youtube()
+import requests  # For sending HTTP requests to query APIs.
+import traceback    # For getting detailed logs if the bot crashes
+import pytesseract  # For transcribing text found in images. See transcribe_image()
+# For getting passwords, API keys, and other authentication details from config.ini
 import configparser
-# import mysql.connector
-from zalgo_text import zalgo
+# import mysql.connector    # For connecting to the database. This is for an old feature that no longer exists.
+from zalgo_text import zalgo    # For making cursed text. see !cursethis trigger
+# This splits a string up into a ['list', 'of', 'words', 'like', 'this']
 from nltk.tokenize import word_tokenize
+# For getting an image from a URL. See image_from_url()
 from PIL import UnidentifiedImageError, Image
 
 # Config and global variables
