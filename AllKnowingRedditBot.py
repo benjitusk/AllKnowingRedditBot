@@ -154,11 +154,11 @@ with open('blacklisted_users.txt') as file:
     blacklisted_users = blacklisted_users.split('\n')
     blacklisted_users = list(filter(None, blacklisted_users))
 
-# Load auto_generated_replies (so we won't auto reply to ourself)
-with open('auto_generated_replies.txt') as file:
-    auto_generated_replies = file.read()
-    auto_generated_replies = auto_generated_replies.split('\n')
-    auto_generated_replies = list(filter(None, auto_generated_replies))
+# Load self_generated_replies (so we won't automatically reply to ourself)
+with open('self_generated_replies.txt') as file:
+    self_generated_replies = file.read()
+    self_generated_replies = self_generated_replies.split('\n')
+    self_generated_replies = list(filter(None, self_generated_replies))
 
 # Print the starting paramaters to the console
 print(f'''Initializing bot with the following paramaters:
@@ -588,11 +588,11 @@ def main():
 def process_comments(comment):
     global blacklisted_subreddits
     global blacklisted_users
-    global auto_generated_replies
+    global self_generated_replies
     global comment_count
     if comment is None or comment.stickied or comment.distinguished:
         return
-    if comment.id in auto_generated_replies:
+    if comment.id in self_generated_replies:
         return
     if comment.subreddit.display_name in blacklisted_subreddits:
         return
@@ -721,7 +721,7 @@ Key: <mandatory arguments>, [optional arguments], (option A) | (option B)
 
 # def reply(comment, message, type='REPLY'):
 #     # Make sure not to exclude comments that were automatically generated...
-#     global auto_generated_replies
+#     global self_generated_replies
 #     try:
 #         c = comment.reply(message)
 #     except Exception as e:
@@ -734,9 +734,9 @@ Key: <mandatory arguments>, [optional arguments], (option A) | (option B)
 #             raise
 #     else:
 #         print(f'{type}: https://www.reddit.com{c.permalink}\n')
-#         # Add reply to auto_generated_replies list
-#         auto_generated_replies.append(c.id)
-#         with open('auto_generated_replies.txt', 'a') as agr:
+#         # Add reply to self_generated_replies list
+#         self_generated_replies.append(c.id)
+#         with open('self_generated_replies.txt', 'a') as agr:
 #             agr.write(f'{c.id}\n')
 
 
