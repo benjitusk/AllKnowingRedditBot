@@ -1,32 +1,63 @@
-name: SSH Deploy
+name: deploy
 on:
   push:
-    branches: [ main ]
+    branches: [ app ]
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@main
-      - name: ssh deploy
-        uses: easingthemes/ssh-deploy@v2.1.5
+      - name: Rsync Deployments Action
+        uses: Burnett01/rsync-deployments@4.1
         with:
-          SSH_PRIVATE_KEY: ${{secrets.SERVER_SSH_KEY}}
-          REMOTE_HOST: ${{secrets.REMOTE_HOST}}
-          REMOTE_USER: ${{secrets.REMOTE_USER}}
-          REMOTE_PORT: 22
-          # SOURCE: "server/" Left commented b/c default is root directory
-          TARGET: ${{secrets.REMOTE_TARGET}}
-      - name: Restart bot to enact changes
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.REMOTE_HOST }}
-          username: ${{ secrets.REMOTE_USER }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          port: 22
-          script: |
-            # Connect to Screen session running the bot and send a KeyboardInterrupt
-            screen -S akrb -p 0 -X stuff "^C"
-            # Print a notice to the screen that the script was relaunched by GitHub Actions
-            screen -S akrb -p 0 -X stuff "# Script Relaunched by GitHub Actions...^M"
-            # Reconnect to Screen session and relaunch the bot, then send ^M, to execute the command
-            screen -S akrb -p 0 -X stuff "${{secrets.REMOTE_TARGET}}/AllKnowingRedditBot.py^M"
+          # The switches
+          switches:
+          # The remote shell argument
+          rsh: # optional, default is
+          # The local path
+          path: /
+          # The remote path
+          remote_path: ${{secrets.TARGET}}/app
+          # The remote host
+          remote_host: ${{secrets.REMOTE_HOST}}
+          # The remote port
+          remote_port: 22
+          # The remote user
+          remote_user: ${{secrets.REMOTE_USER}}
+          # The remote key
+          remote_key: ${{secrets.SSH_PRIVATE_KEY}}
+
+
+
+      # - name: File deployments
+      #   # You may pin to the exact commit or the version.
+      #   # uses: 49nord/action-files@fcafc8f5ff59c9d85a333d11e7bf77a0fa0ba931
+      #   uses: 49nord/action-files@v1
+      #   with:
+      #     # The local path that should be uploaded. Should end with a slash.
+      #     src: /
+      #     # The remote location to sync to, e.g. `user@host:/path/to/dest/`. Should end with a slash.
+      #     dest:
+      #     # SSH private key to add before attempting any transfer.
+      #     ssh_key:
+      #     # SSH known hosts file.
+      #     known_hosts:
+      #     # Arguments passed to `rsync`. The defaults should cover most usecases.
+      #     rsync_args: # optional, default is --delete -avz
+      #     # Argments passed to `rsyncs` SSH invocation, e.g. to pass a custom port use `-p 12345`.
+      #     ssh_args: # optional
+      #
+      #
+      #
+      #
+      #
+      #
+      #
+      # - uses: actions/checkout@main
+      # - name: ssh deploy
+      #   uses: easingthemes/ssh-deploy@v2.1.5
+      #   with:
+      #     SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
+      #     REMOTE_HOST: ${{secrets.REMOTE_HOST}}
+      #     REMOTE_USER: ${{secrets.REMOTE_USER}}
+      #     REMOTE_PORT: 22
+      #     TARGET: ${{secrets.TARGET}}/app
