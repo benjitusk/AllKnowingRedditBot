@@ -1,4 +1,4 @@
-[![Deploy](https://github.com/benjitusk/AllKnowingRedditBot/actions/workflows/main.yml/badge.svg)](https://github.com/benjitusk/AllKnowingRedditBot/actions/workflows/main.yml)
+[![SSH Deploy](https://github.com/benjitusk/AllKnowingRedditBot/actions/workflows/main.yml/badge.svg)](https://github.com/benjitusk/AllKnowingRedditBot/actions/workflows/main.yml)
 # AllKnowingRedditBot
 ## Q: What is this?
 A: These are the digital innards of u/AllKnowingRedditBot, your friendly neighborhood reddit all-in-one bot.
