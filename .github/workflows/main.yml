@@ -15,7 +15,7 @@ jobs:
           REMOTE_HOST: ${{secrets.REMOTE_HOST}}
           REMOTE_USER: ${{secrets.REMOTE_USER}}
           REMOTE_PORT: 22
-          # SOURCE: "server/" Left commented b/c default is root directory
+          SOURCE: rltgoDzvO --exclude={'.github', '.git'}
           TARGET: ${{secrets.REMOTE_TARGET}}
       - name: Restart bot to enact changes
         uses: appleboy/ssh-action@master
@@ -31,14 +31,3 @@ jobs:
             screen -S akrb -p 0 -X stuff "# Script Relaunched by GitHub Actions...^M"
             # Reconnect to Screen session and relaunch the bot, then send ^M, to execute the command
             screen -S akrb -p 0 -X stuff "${{secrets.REMOTE_TARGET}}/AllKnowingRedditBot.py^M"
-      #
-      #
-      # - uses: actions/checkout@main
-      # - name: ssh deploy
-      #   uses: easingthemes/ssh-deploy@v2.1.5
-      #   with:
-      #     SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
-      #     REMOTE_HOST: ${{secrets.REMOTE_HOST}}
-      #     REMOTE_USER: ${{secrets.REMOTE_USER}}
-      #     REMOTE_PORT: 22
-      #     TARGET: ${{secrets.TARGET}}/app
