@@ -107,8 +107,6 @@ def reply(self, message, type='REPLY'):  # self refers to the praw.reddit.Commen
         print(f'{type}: https://www.reddit.com{c.permalink}\n')
         # Add reply_id to self_generated_replies list
         self_generated_replies.append(c.id)
-        with open('self_generated_replies.txt', 'a') as sgr:
-            sgr.write(f'{c.id}\n')
 
 
 # Add extended_reply method to praw.reddit.Comment object
@@ -154,11 +152,9 @@ with open('blacklisted_users.txt') as file:
     blacklisted_users = blacklisted_users.split('\n')
     blacklisted_users = list(filter(None, blacklisted_users))
 
-# Load self_generated_replies (so we won't automatically reply to ourself)
-with open('self_generated_replies.txt') as file:
-    self_generated_replies = file.read()
-    self_generated_replies = self_generated_replies.split('\n')
-    self_generated_replies = list(filter(None, self_generated_replies))
+# We don't need to load self_generated_replies from previous runs,
+# because we are only watching the live comment stream
+self_generated_replies = []
 
 # Print the starting paramaters to the console
 print(f'''Initializing bot with the following paramaters:
