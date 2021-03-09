@@ -9,7 +9,7 @@ import traceback    # For getting detailed logs if the bot crashes
 # For getting passwords, API keys, and other authentication details from config.ini
 import configparser
 # This is our file, I moved a lot of 'dead end' functions there to declutter
-import basic_actions
+import api
 # import mysql.connector    # For connecting to the database. This is for an old feature that no longer exists.
 from zalgo_text import zalgo    # For making cursed text. see !cursethis trigger
 # This splits a string up into a ['list', 'of', 'words', 'like', 'this']
@@ -301,7 +301,7 @@ def main():
             if '>!' in comment.body and '!<' in comment.body:
                 continue
             if not DEBUG:
-                basic_actions.delete_last_line()
+                api.delete_last_line()
             print(f'Scanned {comment_count} comments...')
             process_comments(comment)
     except KeyboardInterrupt:
@@ -340,7 +340,7 @@ def process_comments(comment):
 
     # ADVICE
     if '!advice' in body:
-        comment.reply(basic_actions.get_advice(), 'ADVICE')
+        comment.reply(api.get_advice(), 'ADVICE')
 
     # ZALGO
     if '!cursethis' in body:
@@ -361,19 +361,19 @@ def process_comments(comment):
             text = zalgo.zalgo().zalgofy(text)
 
         # Step 4: Reply
-        comment.reply(f'{text}{basic_actions.get_footer()}', 'ZALGO')
+        comment.reply(f'{text}{api.get_footer()}', 'ZALGO')
 
     # DADJOKE
     if '!dadjoke' in body:
-        comment.reply(basic_actions.get_dadjoke(), 'DADJOKE')
+        comment.reply(api.get_dadjoke(), 'DADJOKE')
 
     # DEFINE
     if '!define' in body:
-        arguments = basic_actions.get_arguments('!define', body)
+        arguments = api.get_arguments('!define', body)
         if arguments == False:
             arguments = 'null'
         word = word_tokenize(arguments)[0]
-        definition = basic_actions.get_definition(word)
+        definition = api.get_definition(word)
         comment.reply(definition, 'DEFINITION')
 
     # FEATURES
@@ -415,21 +415,21 @@ Key: <mandatory arguments>, [optional arguments], (option A) | (option B)
 
     # GIF
     if '!gif' in body:
-        arguments = basic_actions.get_arguments('!gif', body)
-        gif = basic_actions.get_gif(arguments)
+        arguments = api.get_arguments('!gif', body)
+        gif = api.get_gif(arguments)
         comment.reply(gif, 'GIF')
 
     # INSULT
     if '!insult' in body:
-        comment.reply(basic_actions.get_insult(), 'INSULT')
+        comment.reply(api.get_insult(), 'INSULT')
 
     # JOKE
     if '!joke' in body:
-        comment.reply(basic_actions.get_joke(), 'JOKE')
+        comment.reply(api.get_joke(), 'JOKE')
 
     # LYRICS
     if '!lyrics' in body:
-        lyrics = basic_actions.get_lyrics(body)
+        lyrics = api.get_lyrics(body)
         comment.reply(lyrics, 'LYRICS')
 
     # RANDOM
@@ -439,21 +439,21 @@ Key: <mandatory arguments>, [optional arguments], (option A) | (option B)
 
     # SNAPPLE
     if '!snapple' in body:
-        comment.reply(basic_actions.get_random_fact(), 'SNAPPLE')
+        comment.reply(api.get_random_fact(), 'SNAPPLE')
 
     # TRANSCRIBE
     if '!transcribe' in body:
-        image_transcription = basic_actions.transcribe_image(comment)
+        image_transcription = api.transcribe_image(comment)
         comment.reply(image_transcription, 'TRANSCRIBE')
 
     # Translate
     if '!translate' in body:
-        comment.reply(basic_actions.get_translation(comment), 'TRANSLATE')
+        comment.reply(api.get_translation(comment), 'TRANSLATE')
 
     # YOUTUBE
     if '!youtube' in body:
-        query = basic_actions.get_arguments('!youtube', body)
-        youtube = basic_actions.search_youtube(query)
+        query = api.get_arguments('!youtube', body)
+        youtube = api.search_youtube(query)
         comment.reply(youtube, 'YOUTUBE')
 
 
