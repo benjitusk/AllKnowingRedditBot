@@ -2,14 +2,14 @@
 # ^ This line tells my computer to execute this file as python3
 # Imports
 import os   # For checking if this code is executing on the server or not
+# This is our file, I moved a lot of 'dead end' functions there to declutter
+import api
 import praw  # This is the Reddit API library. See https://praw.readthedocs.io/en/latest for documentation
 import time  # For timestamps in log messages and running tasks every x minutes
 import random   # For generating random numbers. See !random trigger
 import traceback    # For getting detailed logs if the bot crashes
 # For getting passwords, API keys, and other authentication details from config.ini
 import configparser
-# This is our file, I moved a lot of 'dead end' functions there to declutter
-import api
 # import mysql.connector    # For connecting to the database. This is for an old feature that no longer exists.
 from zalgo_text import zalgo    # For making cursed text. see !cursethis trigger
 # This splits a string up into a ['list', 'of', 'words', 'like', 'this']
