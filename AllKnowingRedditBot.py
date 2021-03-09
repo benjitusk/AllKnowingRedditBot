@@ -21,6 +21,9 @@ from zalgo_text import zalgo    # For making cursed text. see !cursethis trigger
 from nltk.tokenize import word_tokenize
 # For getting an image from a URL. See image_from_url()
 from PIL import UnidentifiedImageError, Image
+from semantic3.dates import DateService
+from semantic3.units import ConversionService
+from semantic3.solver import MathService
 
 # Config and global variables
 # These 2 lines are for getting persistant variables from config.ini (not on GitHub for obvious security reasons)
