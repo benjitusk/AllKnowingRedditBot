@@ -213,13 +213,14 @@ def delete_negative_comments():
 
 
 def escape_json(data):
+    # This is to remove charaters that break the translation API
+    # Any newline char should be replaced with an escaped backslash (\\) and an N (n)
     data = data.replace('\n', '\\n')
     data = data.replace('\"', '\\\"')
     return data
 
+
 # Take a YouTube timestamp and turn it into DOW MON DOM 24HR YYYY format
-
-
 def format_timestamp(ts):
     return time.ctime(datetime.datetime.strptime(
         ts, "%Y-%m-%dT%H:%M:%SZ").timestamp())
@@ -276,18 +277,21 @@ def get_dadjoke():
     response_json = response.json()
     # Get the joke from the data
     joke = response_json['joke']
-    # returnt the joke
+    # return the joke
     return joke
 
 
 # oh boy... this one is crazy
 # I'll add comments to it later...
 # No really, I will.
-def get_definition(word='null'):
+def get_definition(word='null'):  # If no word is given to define, define the word null
     # Set up the url to call
     url = f'https://api.dictionaryapi.dev/api/v2/entries/en/{word}'
+    # Make the request and get the JSON data from it
     data = requests.get(url).json()
     if 'title' in data:
+        # This means the response contains an error, presumably a `word not found` err
+        # exit the function with the following message:
         return f'''\> Be me
 
 \> Gets asked to look up the definition of the word {word}
@@ -297,28 +301,46 @@ def get_definition(word='null'):
 \> Can't find the word
 
 \> Panik.jpg'''
-    formatted_response = ''
-    item = data[0]
-    formatted_response += f"\n\n#{item['word'].title()}\n"
+
+    # formatted_response is the response that we slowly build up and format as we parse the JSON response
+    formatted_response = ''  # Start off empty
+    # set response_object to the first (and usually only) object in the response JSON
+    response_object = data[0]
+    # Make a markdown formatted title that contains the word being defined
+    formatted_response += f"\n\n#{response_object['word'].title()}\n"
+    # Add a markdown <hr/>
     formatted_response += '---\n'
+    # Subtitle for the pronunciation
     formatted_response += '##Pronunciation:\n\n'
-    for pronunciation in item['phonetics']:
+    # For each pronunciation, add it with the written pronunciation, make it a link to a recording of the pronunciation
+    for pronunciation in response_object['phonetics']:
         formatted_response += f"\n[{pronunciation['text']}]({pronunciation['audio']})  <-- click here for audio\n\n"
-    for item in data:
-        for group in item['meanings']:
-            # add the partOfSpeech
+    # For each definition set of the word
+    for response_object in data:
+        # For each word group in a definition set
+        for group in response_object['meanings']:
+            # add the partOfSpeech as a <h3>
             formatted_response += f'\n\n###{group["partOfSpeech"].title()}\n\n'
+            # For each actual definition of the word
             for d in group['definitions']:
+                # Append it as a bullet point
                 formatted_response += f'* {d["definition"]}\n'
                 if 'example' in d:
+                    # For each example of the definition, append it as a sub-bullet point to the definition
                     formatted_response += f'    * Example: {d["example"]}\n'
                 if 'synonyms' in d:
+                    # After that, make a bullet point that says Synonyms for a list of synonyms
                     formatted_response += '    * Synonyms:\n'
                     for synonym in d['synonyms']:
+                        # For each synonym add it as a sub-bullet point to Synonyms
                         formatted_response += f'        * {synonym}\n'
-        if 'origin' in item:
-            formatted_response += f'\n\n##Origin:\n{item["origin"]}\n\n'
+        if 'origin' in response_object:
+            # If we have information on the origin of the definition
+            # add it under a subtitle 'Origin' with the origin information underneath
+            formatted_response += f'\n\n##Origin:\n{response_object["origin"]}\n\n'
+        # add a linebreak after each definition set
         formatted_response += '\n\n---\n\n'
+    # send the fully reddit-formatted response back to be replied in a comment
     return(formatted_response)
 
 
@@ -331,7 +353,7 @@ def get_footer():
 
 ---
 
-^(Hey, I'm looking for people to [collaborate](https://github.com/benjitusk/AllKnowingRedditBot) with on this bot, if you're intersted, a pm to [benjixinator](https://www.reddit.com/user/benjixinator) [not a PM, use the chat please]!)
+^(Hey, I'm looking for people to [collaborate](https://github.com/benjitusk/AllKnowingRedditBot) with on this bot, if you're intersted, send a chat message to [benjixinator](https://www.reddit.com/user/benjixinator) [not a PM, use the chat please]!)
 
 ^(For a quick overview of what I can do, comment "!features" for a list.)
 '''
