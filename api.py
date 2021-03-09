@@ -13,7 +13,13 @@ from PIL import UnidentifiedImageError, Image
 config = configparser.ConfigParser()
 config.read('config.ini')
 
-API_KEYS = {}
+# These keys provide authentication to prove that it's me when I query these respective web services
+# I'm putting them into a {dict} just for organization
+API_KEYS = {
+    'GIPHY': config['Authentication']['GIPHY'],  # To get gifs
+    'YOUTUBE': config['Authentication']['YOUTUBE'],  # To search YouTube
+    'IBM': config['Authentication']['ibm translation'],  # To translate things
+}
 
 # Take the body of a Reddit comment and seperate the command from the arguments
 

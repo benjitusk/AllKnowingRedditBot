@@ -41,13 +41,6 @@ else:
 good_bot_count = int(config['Bot Persistant Storage']['good_bot'])
 bad_bot_count = int(config['Bot Persistant Storage']['bad_bot'])
 
-# These keys provide authentication to prove that it's me when I query these respective web services
-# I'm putting them into a {dict} just for organization
-API_KEYS = {
-    'GIPHY': config['Authentication']['GIPHY'],  # To get gifs
-    'YOUTUBE': config['Authentication']['YOUTUBE'],  # To search YouTube
-    'IBM': config['Authentication']['ibm translation'],  # To translate things
-}
 # Log in to Reddit using the akrb section in praw.ini, a file that contains reddit login info. NOT ON GITHUB
 reddit = praw.Reddit("akrb")
 # This forces the bot to conform to reddit's new standards when it comes to editing and submitting posts via the API
